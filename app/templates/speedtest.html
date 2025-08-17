@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="tech-grid"></div>
+<div class="floating-element-1"></div>
+<div class="floating-element-2"></div>
+
+<div class="container">
+    <div class="header">
+        <div class="brand">
+            <svg class="gauge-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+            <span class="brand-text">Network Diagnostics</span>
+        </div>
+
+        <h1 class="title">
+            <a href="/"><span class="net">NET-</span><span class="speed">SPEED</span><span class="me">.ME</span></a>
+        </h1>
+
+        <p class="subtitle">
+            Профессиональный анализ производительности сети с расширенной диагностикой
+        </p>
+    </div>
+
+    <div class="test-interface">
+        <button class="speed-test-btn" onclick="startTest()">
+            <svg class="play-icon" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+            </svg>
+        </button>
+
+        <div class="status-text">
+            <div class="status-main" id="statusMain">Initialize Speed Test</div>
+            <div class="status-sub" id="statusSub">[READY_FOR_EXECUTION]</div>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card download">
+            <div class="stat-header">
+                <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17l5 5 5-5M12 12v10"/>
+                </svg>
+                <div class="stat-label">DL</div>
+            </div>
+            <div class="stat-value" id="downloadValue">0.00</div>
+            <div class="stat-unit">Mbps Download</div>
+            <div class="stat-bar">
+                <div class="stat-progress" id="downloadProgress"></div>
+            </div>
+        </div>
+
+        <div class="stat-card upload">
+            <div class="stat-header">
+                <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 7l-5-5-5 5m5 4V2"/>
+                </svg>
+                <div class="stat-label">UL</div>
+            </div>
+            <div class="stat-value" id="uploadValue">0.00</div>
+            <div class="stat-unit">Mbps Upload</div>
+            <div class="stat-bar">
+                <div class="stat-progress" id="uploadProgress"></div>
+            </div>
+        </div>
+
+        <div class="stat-card ping">
+            <div class="stat-header">
+                <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <div class="stat-label">RTT</div>
+            </div>
+            <div class="stat-value" id="pingValue">0</div>
+            <div class="stat-unit">ms Latency</div>
+            <div class="stat-bar">
+                <div class="stat-progress" id="pingProgress"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tech-info">
+        <div class="tech-info-content">
+            <span>SERVER: AUTO</span>
+            <span>•</span>
+            <span>PROTOCOL: HTTPS</span>
+            <span>•</span>
+            <span>STATUS: READY</span>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='tester.js') }}"></script>
+{% endblock %}

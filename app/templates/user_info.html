@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="tech-grid"></div>
+<div class="floating-element-1"></div>
+<div class="floating-element-2"></div>
+
+<div class="container">
+    <div class="header">
+        <div class="brand">
+            <svg class="user-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+            <span class="brand-text">User Diagnostics</span>
+        </div>
+
+        <h1 class="title">
+            <a href="/"><span class="net">NET-</span><span class="speed">SPEED</span><span class="me">.ME</span></a>
+        </h1>
+
+        <p class="subtitle">
+            Подробная информация о вашем браузере и системе для диагностики сети
+        </p>
+    </div>
+
+    <div class="info-grid">
+        <!-- Network Info -->
+        <div class="info-card">
+            <div class="card-header">
+                <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                </svg>
+                <span class="card-title">Сетевая информация</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">IP Адрес</span>
+                <span class="info-value loading" id="ipAddress">Загрузка...</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Онлайн статус</span>
+                <span class="info-value status-online" id="onlineStatus">Online</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Тип соединения</span>
+                <span class="info-value" id="connectionType">Unknown</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Effective Type</span>
+                <span class="info-value" id="effectiveType">Unknown</span>
+            </div>
+        </div>
+
+        <!-- Browser Info -->
+        <div class="info-card">
+            <div class="card-header">
+                <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s1.343-9 3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                </svg>
+                <span class="card-title">Браузер</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">User Agent</span>
+                <span class="info-value" id="userAgent">Загрузка...</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Язык</span>
+                <span class="info-value" id="language">Загрузка...</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Cookies</span>
+                <span class="info-value" id="cookiesEnabled">Загрузка...</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Java Script</span>
+                <span class="info-value status-online">Включен</span>
+            </div>
+        </div>
+
+        <!-- Screen Info -->
+        <div class="info-card">
+            <div class="card-header">
+                <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                <span class="card-title">Экран</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Разрешение</span>
+                <span class="info-value" id="screenResolution">Загрузка...</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Доступная область</span>
+                <span class="info-value" id="availableScreen">Загрузка...</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Глубина цвета</span>
+                <span class="info-value" id="colorDepth">Загрузка...</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Пиксельное отношение</span>
+                <span class="info-value" id="pixelRatio">Загрузка...</span>
+            </div>
+        </div>
+
+        <!-- System Info -->
+        <div class="info-card">
+            <div class="card-header">
+                <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                </svg>
+                <span class="card-title">Система</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Платформа</span>
+                <span class="info-value" id="platform">Загрузка...</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Часовой пояс</span>
+                <span class="info-value" id="timezone">Загрузка...</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Местное время</span>
+                <span class="info-value" id="localTime">Загрузка...</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Hardware Concurrency</span>
+                <span class="info-value" id="hardwareConcurrency">Загрузка...</span>
+            </div>
+        </div>
+
+        <!-- Location Info -->
+        <div class="info-card">
+            <div class="card-header">
+                <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                <span class="card-title">Геолокация</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Доступность</span>
+                <span class="info-value" id="geolocationSupport">Загрузка...</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Координаты</span>
+                <span class="info-value" id="coordinates">Недоступно</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Точность</span>
+                <span class="info-value" id="accuracy">Недоступно</span>
+            </div>
+        </div>
+
+        <!-- Storage Info -->
+        <div class="info-card">
+            <div class="card-header">
+                <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
+                </svg>
+                <span class="card-title">Хранилище</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Local Storage</span>
+                <span class="info-value" id="localStorage">Загрузка...</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Session Storage</span>
+                <span class="info-value" id="sessionStorage">Загрузка...</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">IndexedDB</span>
+                <span class="info-value" id="indexedDB">Загрузка...</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">WebSQL</span>
+                <span class="info-value" id="webSQL">Загрузка...</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="tech-info">
+        <div class="tech-info-content">
+            <span>STATUS: <span id="systemStatus">ANALYZING</span></span>
+            <span>•</span>
+            <span>PROTOCOL: HTTPS</span>
+            <span>•</span>
+            <span>LAST_UPDATE: <span id="lastUpdate">--:--:--</span></span>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='user_info.js') }}"></script>
+{% endblock %}
