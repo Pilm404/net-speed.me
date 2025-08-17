@@ -62,7 +62,7 @@ async function saveData1(uploadSpeed, downloadSpeed, ping) {
         if (result.success) {
             sharePath = window.location.host + '/share/' + result.code;
         } else {
-            alert('Error: ' + result.error);
+            alert('Error from server: ' + result.error);
         }
     } catch (error) {
         alert('Error: ' + result.error);

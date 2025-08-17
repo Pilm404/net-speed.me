@@ -7,7 +7,7 @@ from app.util import get_safe_uuid
 from app import app, db
 
 
-@app.route('/api/share/<string:share_code>', methods=['GET'])
+@app.route('/api/share/<string:share_code>')
 def get_share_data(share_code):
     data = db.session.scalar(
         sa.select(SpeedShare).where(SpeedShare.code == share_code))
@@ -23,6 +23,15 @@ def add_share():
         if not data:
             return jsonify({'success': False, 'error': "Can not get data from JSON"}), 400
 
+        pair = db.session.scalar(
+            sa.select(SpeedShare).where(SpeedShare.download_speed == data.get('download') and
+                                        SpeedShare.upload_speed == data.get('upload') and
+                                        SpeedShare.ping == data.get('ping') and
+                                        SpeedShare.ip == request.remote_addr))
+
+        if pair:
+            return jsonify({'success': True, 'code': pair.code}), 201
+
         two_days_ago = datetime.now(timezone.utc) - timedelta(days=1)
         recent_records_count = db.session.scalar(
             sa.select(sa.func.count(SpeedShare.id)).where(
@@ -35,6 +44,9 @@ def add_share():
 
         if recent_records_count >= 5:
             return jsonify({'success': False, 'error': "Too many requests"}), 429
+
+        if (data.get('download') == 0 and data.get('upload') == 0 and data.get('ping') == 0):
+            return jsonify({'success': False, 'error': "The data has not been changed"}), 400
 
         uuid = get_safe_uuid(15)
         if uuid is None:
