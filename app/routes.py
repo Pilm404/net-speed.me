@@ -15,7 +15,7 @@ def about_me():
 
 @app.route('/share/<string:share_code>')
 def share(share_code):
-    return render_template('share.html')
+    return render_template('share.html', uuid=share_code)
 
 @app.route('/share/delete/<string:share_code>')
 def share_delete(share_code):
