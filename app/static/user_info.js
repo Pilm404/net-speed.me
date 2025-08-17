@@ -10,10 +10,10 @@ async function getIPAddress() {
     try {
         const response = await fetch('/api/ip');
         const data = await response.json();
-        document.getElementById('ipAddress').textContent = data.ip || 'Недоступно';
+        document.getElementById('ipAddress').textContent = data.ip || 'Not available';
         document.getElementById('ipAddress').classList.remove('loading');
     } catch (error) {
-        document.getElementById('ipAddress').textContent = 'Ошибка загрузки';
+        document.getElementById('ipAddress').textContent = 'Download error';
         document.getElementById('ipAddress').classList.remove('loading');
     }
 }
@@ -23,7 +23,7 @@ function loadUserInfo() {
     // Browser info
     document.getElementById('userAgent').textContent = navigator.userAgent;
     document.getElementById('language').textContent = navigator.language;
-    document.getElementById('cookiesEnabled').textContent = navigator.cookieEnabled ? 'Включены' : 'Отключены';
+    document.getElementById('cookiesEnabled').textContent = navigator.cookieEnabled ? 'Enabled' : 'Disabled';
     document.getElementById('platform').textContent = navigator.platform;
 
     // Screen info
@@ -34,7 +34,7 @@ function loadUserInfo() {
 
     // System info
     document.getElementById('timezone').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    document.getElementById('hardwareConcurrency').textContent = navigator.hardwareConcurrency || 'Недоступно';
+    document.getElementById('hardwareConcurrency').textContent = navigator.hardwareConcurrency || 'Not available';
 
     // Network info
     if (navigator.onLine !== undefined) {
@@ -49,14 +49,14 @@ function loadUserInfo() {
     }
 
     // Storage support
-    document.getElementById('localStorage').textContent = typeof(Storage) !== "undefined" ? 'Поддерживается' : 'Не поддерживается';
-    document.getElementById('sessionStorage').textContent = typeof(Storage) !== "undefined" ? 'Поддерживается' : 'Не поддерживается';
-    document.getElementById('indexedDB').textContent = typeof(window.indexedDB) !== "undefined" ? 'Поддерживается' : 'Не поддерживается';
-    document.getElementById('webSQL').textContent = typeof(window.openDatabase) !== "undefined" ? 'Поддерживается' : 'Не поддерживается';
+    document.getElementById('localStorage').textContent = typeof(Storage) !== "undefined" ? 'Supported' : 'Not supported';
+    document.getElementById('sessionStorage').textContent = typeof(Storage) !== "undefined" ? 'Supported' : 'Not supported';
+    document.getElementById('indexedDB').textContent = typeof(window.indexedDB) !== "undefined" ? 'Supported' : 'Not supported';
+    document.getElementById('webSQL').textContent = typeof(window.openDatabase) !== "undefined" ? 'Supported' : 'Not supported';
 
     // Geolocation
     if (navigator.geolocation) {
-        document.getElementById('geolocationSupport').textContent = 'Поддерживается';
+        document.getElementById('geolocationSupport').textContent = 'Supported';
 
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -65,12 +65,12 @@ function loadUserInfo() {
                 document.getElementById('accuracy').textContent = `${position.coords.accuracy} м`;
             },
             (error) => {
-                document.getElementById('coordinates').textContent = 'Отказано в доступе';
-                document.getElementById('accuracy').textContent = 'Недоступно';
+                document.getElementById('coordinates').textContent = 'Access denied';
+                document.getElementById('accuracy').textContent = 'Not available';
             }
         );
     } else {
-        document.getElementById('geolocationSupport').textContent = 'Не поддерживается';
+        document.getElementById('geolocationSupport').textContent = 'Not supported';
     }
 }
 
