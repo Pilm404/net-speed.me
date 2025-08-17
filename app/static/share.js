@@ -6,7 +6,7 @@ let lastData1 = {
 }
 
 function GetSharePath() {
-    return sharePath;
+    return window.location.host + sharePath;
 }
 
 function isAnythingChanged1(uploadSpeed, downloadSpeed, ping) {
@@ -60,7 +60,7 @@ async function saveData1(uploadSpeed, downloadSpeed, ping) {
         const result = await response.json();
 
         if (result.success) {
-            sharePath = window.location.host + '/share/' + result.code;
+            sharePath = '/share/' + result.code;
         } else {
             alert('Error from server: ' + result.error);
         }
