@@ -64,3 +64,48 @@ def add_share():
         return jsonify({'success': True, 'code': new_record.code}), 201
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 400
+
+@app.route('/api/share/edit/<string:share_code>', methods=['POST'])
+def edit_share(share_code):
+    try:
+        data = request.get_json()
+        if data is None:
+            return jsonify({'success': False, 'error': "Can not get data from JSON"}), 400
+
+        field = db.session.scalar(
+            sa.select(SpeedShare).where(SpeedShare.code == share_code))
+
+        if field is None:
+            return jsonify({'success': False, 'error': "Can not find field"}), 404
+
+        if field.ip != request.remote_addr:
+            return jsonify({'success': False, 'error': "Incorrect IP address"}), 502
+
+        if data.get('download') is not None:
+            field.download_speed = data.get('download')
+
+        if data.get('upload') is not None:
+            field.upload_speed = data.get('upload')
+
+        if data.get('ping') is not None:
+            field.ping = data.get('ping')
+
+        uuid = get_safe_uuid(15)
+        if uuid is None:
+            return jsonify({'success': False, 'error': "Can not generate UUID code"}), 400
+
+        field.code = uuid
+
+        db.session.commit()
+        return jsonify({'success': True, 'code': uuid}), 200
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 400
+
+@app.route('/api/share/status/<string:share_code>')
+def share_status(share_code):
+    try:
+        field = db.session.scalar(
+            sa.select(SpeedShare).where(SpeedShare.code == share_code))
+        return jsonify({"available": field is not None}), 200
+    except:
+        return jsonify({"available": False}), 200
