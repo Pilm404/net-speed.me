@@ -101,7 +101,7 @@ def edit_share(share_code):
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 400
 
-@app.route('/api/share/status/<string:share_code>')
+@app.route('/api/share/status/<string:share_code>', methods=['POST'])
 def share_status(share_code):
     try:
         field = db.session.scalar(
