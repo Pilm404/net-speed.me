@@ -1,23 +1,85 @@
-let sharePath = null;
-let lastData1 = {
-    upload: null,
-    download: null,
-    ping: null
-}
+class SpeedTestShare {
+    constructor() {
+        this.sharePath = null;
+        this.lastData = {
+            upload: null,
+            download: null,
+            ping: null
+        };
+    }
 
-function GetSharePath() {
-    return window.location.host + sharePath;
-}
+    async getSharePath() {
+        if (!this.sharePath) {
+            return null;
+        }
+        
+        const code = this.sharePath.split('/').pop();
+        
+        try {
+            const response = await fetch(`/api/share/status/${code}`);
+            const result = await response.json();
+            
+            if (result.available === true) {
+                return window.location.host + this.sharePath;
+            } else {
+                return null;
+            }
+        } catch (error) {
+            return null;
+        }
+    }
 
-function isAnythingChanged1(uploadSpeed, downloadSpeed, ping) {
-    if (!sharePath) {
+    isAnythingChanged(uploadSpeed, downloadSpeed, ping) {
+        if (!this.sharePath) {
+            return true;
+        }
+        if (this.lastData.upload == uploadSpeed && 
+            this.lastData.download == downloadSpeed && 
+            this.lastData.ping == ping) {
+            return false;
+        }
         return true;
     }
-    if (lastData1.upload == uploadSpeed && lastData1.download == downloadSpeed && lastData1.ping == ping) {
-        return false;
+
+    async saveData(uploadSpeed, downloadSpeed, ping) {
+        const data = {
+            upload: uploadSpeed,
+            download: downloadSpeed,
+            ping: ping
+        };
+
+        try {
+            const response = await fetch('/api/share/add/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                this.sharePath = '/share/' + result.code;
+            } else {
+                alert('Error from server: ' + result.error);
+            }
+        } catch (error) {
+            alert('Error: ' + error.message);
+        }
     }
-    return true;
+
+    async process(uploadSpeed, downloadSpeed, ping) {
+        if (this.isAnythingChanged(uploadSpeed, downloadSpeed, ping)) {
+            await this.saveData(uploadSpeed, downloadSpeed, ping);
+            this.lastData.upload = uploadSpeed;
+            this.lastData.download = downloadSpeed;
+            this.lastData.ping = ping;
+        }
+    }
 }
+
+const speedTestShare = new SpeedTestShare();
 
 function initShare1() {
     const downloadElement = document.getElementById('downloadValue');
@@ -33,38 +95,5 @@ function initShare1() {
     const uploadSpeed = parseFloat(uploadElement.innerHTML);
     const ping = parseInt(pingElement.innerHTML);
 
-    if (isAnythingChanged1(uploadSpeed, downloadSpeed, ping)) {
-        saveData1(uploadSpeed, downloadSpeed, ping);
-        lastData1.upload = uploadSpeed;
-        lastData1.download = downloadSpeed;
-        lastData1.ping = ping;
-    }
-}
-
-async function saveData1(uploadSpeed, downloadSpeed, ping) {
-    const data = {
-        upload: uploadSpeed,
-        download: downloadSpeed,
-        ping: ping
-    };
-
-    try {
-        const response = await fetch('/api/share/add/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-            sharePath = '/share/' + result.code;
-        } else {
-            alert('Error from server: ' + result.error);
-        }
-    } catch (error) {
-        alert('Error: ' + result.error);
-    }
+    speedTestShare.process(uploadSpeed, downloadSpeed, ping);
 }
