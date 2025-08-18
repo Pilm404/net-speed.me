@@ -23,59 +23,7 @@
         </div>
 
         <div id="content">
-            <div class="loading">
-                <div class="loading-spinner"></div>
-                <div class="loading-text">Loading Results...</div>
-            </div>
-        </div>
-
-        <a href="/share/delete/{{ uuid }}" class="back-button">
-            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-            </svg>
-            Delete page
-        </a>
-    </div>
-
-    <script>
-        function getIdFromUrl() {
-            const path = window.location.pathname;
-            const matches = path.match(/\/share\/([^\/]+)/);
-            return matches ? matches[1] : null;
-        }
-
-        async function loadResults() {
-            const id = getIdFromUrl();
-            const contentDiv = document.getElementById('content');
-
-            if (!id) {
-                showError('Invalid URL. ID not found.');
-                return;
-            }
-
-            try {
-                const response = await fetch(`/api/share/${id}`);
-
-                if (!response.ok) {
-                    throw new Error('No results found');
-                }
-
-                const data = await response.json();
-                showResults(data);
-            } catch (error) {
-                showError('Failed to upload test results');
-            }
-        }
-
-        function showResults(data) {
-            const contentDiv = document.getElementById('content');
-
-            const downloadProgress = Math.min((data.download || 0) / 100 * 100, 100);
-            const uploadProgress = Math.min((data.upload || 0) / 100 * 100, 100);
-            const pingProgress = Math.min((100 - (data.ping || 0)) / 100 * 100, 100);
-
-            contentDiv.innerHTML = `
-                <div class="results-container">
+            <div class="results-container">
                     <div class="stat-card download">
                         <div class="stat-header">
                             <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -83,10 +31,10 @@
                             </svg>
                             <div class="stat-label">DL</div>
                         </div>
-                        <div class="stat-value">${(data.download || 0).toFixed(2)}</div>
+                        <div class="stat-value">{{ download }}</div>
                         <div class="stat-unit">Mbps Download</div>
                         <div class="stat-bar">
-                            <div class="stat-progress" style="width: ${downloadProgress}%"></div>
+                            <div class="stat-progress" style="width: {{ download_progress }}%"></div>
                         </div>
                     </div>
 
@@ -97,10 +45,10 @@
                             </svg>
                             <div class="stat-label">UL</div>
                         </div>
-                        <div class="stat-value">${(data.upload || 0).toFixed(2)}</div>
+                        <div class="stat-value">{{ upload }}</div>
                         <div class="stat-unit">Mbps Upload</div>
                         <div class="stat-bar">
-                            <div class="stat-progress" style="width: ${uploadProgress}%"></div>
+                            <div class="stat-progress" style="width: {{ upload_progress }}%"></div>
                         </div>
                     </div>
 
@@ -111,27 +59,20 @@
                             </svg>
                             <div class="stat-label">RTT</div>
                         </div>
-                        <div class="stat-value">${data.ping || 0}</div>
+                        <div class="stat-value">{{ ping }}</div>
                         <div class="stat-unit">ms Latency</div>
                         <div class="stat-bar">
-                            <div class="stat-progress" style="width: ${pingProgress}%"></div>
+                            <div class="stat-progress" style="width: {{ ping_progress }}%"></div>
                         </div>
                     </div>
                 </div>
-            `;
-        }
+        </div>
 
-        function showError(message) {
-            const contentDiv = document.getElementById('content');
-            contentDiv.innerHTML = `
-                <div class="error">
-                    <svg class="error-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    <div class="error-text">${message}</div>
-                </div>
-            `;
-        }
-        document.addEventListener('DOMContentLoaded', loadResults);
-    </script>
+        <a href="/share/delete/{{ uuid }}" class="back-button">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+            Delete page
+        </a>
+    </div>
 {% endblock %}
