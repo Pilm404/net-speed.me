@@ -56,7 +56,7 @@ class SpeedTest {
                 await this.sleep(200);
             } catch (error) {
                 console.error('Ошибка пинга:', error);
-                pingResults.push(1000); // Высокий пинг в случае ошибки
+                pingResults.push(1000);
             }
         }
 
@@ -70,7 +70,7 @@ class SpeedTest {
     async testDownload() {
         this.updateStatus('Тест скачивания...', '[DOWNLOAD_TEST]');
 
-        const downloadSizes = [16, 32]; // MB
+        const downloadSizes = [16, 32];
         let totalBytes = 0;
         let totalTime = 0;
 
@@ -98,7 +98,7 @@ class SpeedTest {
                     downloadedBytes += value.length;
 
                     const currentTime = performance.now();
-                    const timeElapsed = (currentTime - startTime) / 1000; // секунды
+                    const timeElapsed = (currentTime - startTime) / 1000;
 
                     if (timeElapsed > 0) {
                         const speedMbps = (downloadedBytes * 8) / (timeElapsed * 1000000);
@@ -110,7 +110,7 @@ class SpeedTest {
                 }
 
                 const endTime = performance.now();
-                const duration = (endTime - startTime) / 1000; // секунды
+                const duration = (endTime - startTime) / 1000;
 
                 totalBytes += downloadedBytes;
                 totalTime += duration;
@@ -121,7 +121,7 @@ class SpeedTest {
         }
 
         if (totalTime > 0) {
-            this.testResults.download = (totalBytes * 8) / (totalTime * 1000000); // Мбит/с
+            this.testResults.download = (totalBytes * 8) / (totalTime * 1000000);
             document.getElementById('downloadValue').textContent = this.testResults.download.toFixed(2);
         }
     }
@@ -129,7 +129,7 @@ class SpeedTest {
     async testUpload() {
         this.updateStatus('Тест загрузки...', '[UPLOAD_TEST]');
 
-        const uploadSizes = [8, 16]; // MB
+        const uploadSizes = [8, 16];
         let totalBytes = 0;
         let totalTime = 0;
 
@@ -143,7 +143,6 @@ class SpeedTest {
             const startTime = performance.now();
 
             try {
-                // Создаем XMLHttpRequest для отслеживания прогресса загрузки
                 const uploadProgress = await new Promise((resolve, reject) => {
                     const xhr = new XMLHttpRequest();
 
@@ -190,9 +189,8 @@ class SpeedTest {
             }
         }
 
-        // Вычисляем итоговую скорость загрузки
         if (totalTime > 0) {
-            this.testResults.upload = (totalBytes * 8) / (totalTime * 1000000); // Мбит/с
+            this.testResults.upload = (totalBytes * 8) / (totalTime * 1000000);
             document.getElementById('uploadValue').textContent = this.testResults.upload.toFixed(2);
         }
     }
